@@ -21,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void button2_click(View view) {
-        Toast.makeText(getApplicationContext(), "Ejercicio 2", Toast.LENGTH_SHORT).show();
+        Intent i = new Intent(this, Calculadora.class);
+        startActivity(i);
     }
 }
