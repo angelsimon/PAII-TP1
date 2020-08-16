@@ -17,4 +17,8 @@ public class MainActivity extends AppCompatActivity {
     public void button_click(View view) {
         Toast.makeText(getApplicationContext(), "Ejercicio 1", Toast.LENGTH_SHORT).show();
     }
+
+    public void button2_click(View view) {
+        Toast.makeText(getApplicationContext(), "Ejercicio 2", Toast.LENGTH_SHORT).show();
+    }
 }
