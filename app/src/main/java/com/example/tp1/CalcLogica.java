@@ -1,16 +1,56 @@
 package com.example.tp1;
 
+import java.text.DecimalFormat;
+
 public class CalcLogica{
+
+    public enum Estado{
+        Inicio,
+        Operando1,
+        Operacion,
+        Operando2,
+        MostrandoResultado,
+        Error
+    }
+
     private String operacion,n1, n2, resultado;
+    private Estado estado;
 
     public CalcLogica(){
         reset();
     }
+
+    public void setEstado(Estado estado){
+        this.estado = estado;
+    }
+
+    public Estado getEstado(){
+        return this.estado;
+    }
+
     public void reset(){
         n1 = "0";
         n2 = "";
         operacion = "";
         resultado = "";
+        this.estado = Estado.Inicio;
+    }
+
+    private String getNumber(String number){
+        Double a = 0.0;
+        long b = 0;
+        number = leadingZeros(number);
+        a = Double.parseDouble(number);
+        b = a.longValue();
+
+        if(a - b != 0){
+            DecimalFormat df = new DecimalFormat("###.#####");
+            number = df.format(a);
+        }
+        else{
+            number = String.valueOf(b);
+        }
+        return number;
     }
 
     private String leadingZeros(String number){
@@ -19,45 +59,66 @@ public class CalcLogica{
 
     private String getResultado(){
         if (operacion == ""){
-            return leadingZeros(n1);
+            return getNumber(n1);
         }
         else{
             if (n2.length() == 0)
-                return leadingZeros(n1);
+                return getNumber(n1);
             else
-                return leadingZeros(n2);
+                return getNumber(n2);
 
         }
     }
 
     private String calcular(){
         Double res = 0.0;
+        if(this.estado != Estado.Operando2){
+            return getNumber(n1);
+        }
         switch(operacion){
             case "+":
                 res = Double.parseDouble(n1) + Double.parseDouble(n2);
             break;
             case "-":
                 res = Double.parseDouble(n1) - Double.parseDouble(n2);
+             break;
+            case "/":
+                if(n2 == "0"){
+                    this.estado = Estado.Error;
+                }
+                else {
+                    res = Double.parseDouble(n1) / Double.parseDouble(n2);
+                }
             break;
-
+            default:
+                res = Double.parseDouble(n1) * Double.parseDouble(n2);
+            break;
         }
         reset();
         n1 = String.valueOf(res);
-        return n1;
+        n2 = "";
+        this.estado = Estado.Operacion;
+        return getNumber(n1);
     }
 
     private void addNumber(String n){
         if (operacion == ""){
             /// N1
             n1 += n;
+            this.estado = Estado.Operando1;
         }
         else {
             /// N2
             n2 += n;
+            this.estado = Estado.Operando2;
         }
     }
 
     private void addOperacion(String n){
+        if(this.estado == Estado.Operando2){
+            calcular();
+        }
+
         operacion = n;
     }
 
