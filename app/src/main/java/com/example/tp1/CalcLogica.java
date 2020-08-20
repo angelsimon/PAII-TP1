@@ -9,30 +9,20 @@ public class CalcLogica{
         Operando1,
         Operacion,
         Operando2,
-        MostrandoResultado,
         Error
     }
 
-    private String operacion,n1, n2, resultado;
+    private String operacion,n1, n2;
     private Estado estado;
 
     public CalcLogica(){
         reset();
     }
 
-    public void setEstado(Estado estado){
-        this.estado = estado;
-    }
-
-    public Estado getEstado(){
-        return this.estado;
-    }
-
     public void reset(){
         n1 = "0";
         n2 = "";
         operacion = "";
-        resultado = "";
         this.estado = Estado.Inicio;
     }
 
